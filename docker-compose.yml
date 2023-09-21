@@ -25,3 +25,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - dist:/var/www/html
+
+networks:
+  default:
+    name: 'mysql-network'
+    external: true
