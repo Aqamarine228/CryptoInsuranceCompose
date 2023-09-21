@@ -23,7 +23,5 @@ services:
     build:
       context: https://${GITHUB_TOKEN}@github.com/Aqamarine228/CryptoInsuranceBack.git
       dockerfile: Dockerfile
-    depends_on:
-      - mysqldb
     volumes:
       - dist:/var/www/html
