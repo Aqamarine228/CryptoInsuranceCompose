@@ -1,7 +1,8 @@
 version: "3.9"
 
 volumes:
-  dist: {}
+  back: { }
+  front: { }
 
 services:
   nginx:
@@ -10,7 +11,8 @@ services:
     ports:
       - "33667:80"
     volumes:
-      - dist:/var/www/html
+      - back:/var/www/html
+      - front:/var/www/html/public/front
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/fastcgi-php.conf:/etc/nginx/fastcgi-php.conf
     depends_on:
@@ -24,7 +26,21 @@ services:
       context: https://${GITHUB_TOKEN}@github.com/Aqamarine228/CryptoInsuranceBack.git
       dockerfile: Dockerfile
     volumes:
-      - dist:/var/www/html
+      - back:/var/www/html
+
+  frontend:
+    restart: no
+    command: yarn build
+    build:
+      context: https://${GITHUB_TOKEN}@github.com/Aqamarine228/CryptoInsuranceFrontend.git
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    stdin_open: true
+    depends_on:
+      - backend
+    volumes:
+      - front:/app/frontend/dist
 
 networks:
   default:
