@@ -28,6 +28,15 @@ services:
     volumes:
       - back:/var/www/html
 
+  backend-q:
+    restart: on-failure
+    command: php artisan schedule:work
+    env_file:
+      - .env
+    build:
+      context: https://${GITHUB_TOKEN}@github.com/Aqamarine228/CryptoInsuranceBack.git
+      dockerfile: Dockerfile
+
   frontend:
     restart: no
     command: yarn build
